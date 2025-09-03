@@ -1,0 +1,141 @@
+Create a production-ready React Native “Post an Opinion” screen for the app “Opnio”.
+
+Goal
+
+Recreate the visual design and behavior from the provided screenshot/HTML (peach theme, dashed upload card, tags, anonymous toggle, sticky header and bottom nav).
+Cross-platform: iOS, Android, and Web.
+Tech/Architecture
+
+React Native + TypeScript.
+React Navigation v6+ (native stack + bottom tabs).
+Vector icons (Material icons) via react-native-vector-icons or Expo vector icons.
+Image upload: expo-image-picker or react-native-image-picker. For web, support input type="file" and drag-and-drop where possible.
+Form: react-hook-form + zod (or yup) validation.
+Styling: StyleSheet or styled-components/tamagui; centralize theme tokens.
+Safe areas: react-native-safe-area-context.
+Accessibility labels/testIDs on all actionable elements.
+Theme/Design Tokens
+
+Font: Plus Jakarta Sans (load via expo-google-fonts; fallbacks: System, -apple-system).
+Colors
+primary (peach): #f5a48a
+accent: #f8c7b8
+bg: #fcf9f8
+textPrimary: #333333
+textSecondary: #666666
+surfaceSecondary: #fceee9
+Elevation and radii
+rounded-xl on cards/inputs (16px).
+Subtle shadows where applicable.
+Spacing: 16 as base unit.
+Layout
+
+Full-screen responsive layout with bg #fcf9f8.
+KeyboardAvoidingView + ScrollView for the form content.
+Sticky elements:
+Top header (native stack header or custom) with back chevron and centered title.
+Bottom tab bar.
+Header (Sticky)
+
+Left: back button (Material “arrow_back_ios_new”).
+Title: “Post an Opinion”, centered, text-xl, bold, color #333333.
+Right: empty spacer.
+Background: blurred/translucent over content, uses bg #fcf9f8.
+Form Sections
+
+Upload Photo
+Large dashed drop area card:
+Height ≈ 192px, rounded-xl, border-2 dashed with color accent (#f8c7b8) but lean toward primary on hover/active.
+Background surfaceSecondary (#fceee9); hover to white on web.
+Center icon: Material “cloud_upload” in primary color.
+Text: “Click to upload or drag and drop” (primary highlight) + caption “SVG, PNG, JPG or GIF”.
+Behavior:
+Tap: open image library.
+Optional: “Take Photo” option if camera permission granted.
+Web: support drag-and-drop (fallback to click).
+After selection: show preview (rounded-xl) with remove button (X).
+Validate type (png/jpg/gif/svg) and size (e.g., <= 10 MB).
+Your Opinion
+Multiline TextInput, rounded-xl, border accent, placeholder “Share your story or opinion…”.
+Character counter (e.g., 0/500) and validation: required min 5, max 500.
+Tags
+Tag chips row showing existing tags (#friendly, #creative) as rounded pills:
+Background: surfaceSecondary; text: primary; each chip has a small close “x”.
+Tag input:
+Placeholder: “Add a tag and press Enter”.
+Add on Enter/Return, comma, or tapping an “Add” action.
+Auto-prefix with #, trim spaces, enforce max 5–8 tags, 2–20 chars each.
+Prevent duplicates; show inline validation.
+Post Anonymously
+Label + Switch (default off). When on, omit/display avatar name elsewhere in the app.
+Provide a11y hints: “Post anonymously” on/off.
+Submit
+Primary button: “Post Opinion”
+Full width, rounded-xl, bg primary, bold white text.
+Disabled until form valid or while submitting; show loading spinner on submit.
+Bottom Navigation (Sticky)
+
+Tabs: Home, Post, Community, Profile.
+Icons: Material Symbols (or Material Icons) outlined; “Post” is active.
+Active tab: primary color + bold label.
+Inactive: gray textSecondary; hover/press → primary tint.
+Routes:
+Home → HomeFeed
+Post → PostScreen (current)
+Community → CommunityScreen
+Profile → ProfileScreen
+Interactions & Logic
+
+Validation with react-hook-form + zod:
+opinion: string().min(5).max(500)
+tags: array(string()).max(8)
+image: optional; if present, check mime and size
+anonymous: boolean
+Submit flow:
+On press → validate → POST /opinions
+Payload: { text, tags, anonymous, image: { uri, mime, name } }
+Show loading state; handle success (toast + navigate back or to the new post).
+Handle errors with inline messages and a non-blocking toast/banner.
+Haptics on success/error if available.
+Permissions handling for camera/library; graceful fallbacks.
+Web drag-and-drop: highlight drop zone on drag over.
+Accessibility
+
+All buttons and switches have accessibilityLabel and accessible roles.
+Sufficient color contrast for text and states.
+Large touch targets (min 44x44).
+Screen reader friendly announcements on submit success/error.
+Clean Code & Reusability
+
+Components:
+AppHeader
+ImageUploader
+OpinionInput (with counter)
+TagChip
+TagInput
+AnonymousSwitch
+PrimaryButton
+BottomTabNav
+Keep styles theme-driven; no magic numbers.
+Type-safe form and API types.
+Include testIDs for E2E/UI tests.
+Deliverables
+
+TypeScript RN code for PostOpinionScreen and reusable components.
+Theme file exporting colors, spacing, typography.
+Navigation setup with the 4 tabs, “Post” active.
+Mock API function with success/error simulation.
+Brief README in comments on how to run and how web drag-and-drop is handled.
+Visual Notes to Match the Screenshot/HTML
+
+Use Plus Jakarta Sans throughout.
+Background #fcf9f8 everywhere.
+Primary peach #f5a48a; accent #f8c7b8; secondary surface #fceee9.
+Dashed border for upload card; centered cloud icon and helper text.
+Tags displayed as soft peach pills with a small “x” button.
+Submit button uses strong peach, rounded-xl, bold label.
+Header title centered; bottom nav mirrors labels/icons: Home, Post (active), Community, Profile.
+Output
+
+Provide complete, runnable code snippets for the screen, components, and minimal navigation setup.
+Include notes for dependencies to install (react-navigation, vector icons, image picker, react-hook-form, zod, safe-area, expo-google-fonts or alternative).

@@ -1,0 +1,150 @@
+Create a production-ready React Native “Profile Detail” screen for the app “Opnio”.
+
+Goal
+
+Recreate the visual design and behavior from the provided screenshot/HTML (centered avatar with edit chip, name/handle, stats, Follow button, About card, tab switcher, masonry grid of posts, sticky header and bottom nav).
+Cross-platform: iOS, Android, and Web.
+Tech/Architecture
+
+React Native + TypeScript.
+React Navigation v6+ (native stack + bottom tabs).
+Vector icons: Material Symbols/Material Icons via react-native-vector-icons or Expo vector icons.
+Lists: FlashList or FlatList; for masonry use rn-masonry-list or a performant 2+ column layout.
+Styling: StyleSheet or styled-components/tamagui; theme tokens centralized.
+Fonts: Plus Jakarta Sans via expo-google-fonts (fallbacks: System, -apple-system).
+Safe areas: react-native-safe-area-context.
+State/data fetching: react-query or SWR; mock API helpers.
+Accessibility labels/testIDs everywhere.
+Theme/Design Tokens
+
+Colors
+primary: #f5a48a
+accent: #f8c7b8
+surfaceSecondary: #fceee9
+background: #fcf9f8
+textPrimary: #333333
+textSecondary: #666666
+Typography
+Header title: text-xl, bold
+Name: text-3xl/2xl bold depending on platform
+Handle: text-sm, textSecondary
+Stat numbers: text-lg bold; labels: text-sm textSecondary
+Radii: rounded-xl on cards (16), full for avatar/button chips.
+Shadows: subtle elevation on avatar and cards.
+Layout
+
+Full-screen responsive layout with background #fcf9f8.
+Sticky top header and sticky bottom tab bar.
+Scrollable content in between (KeyboardAvoidingView not required here).
+Pull-to-refresh on the tabbed lists.
+Header (Sticky)
+
+Left: back button (Material “arrow_back”).
+Title: user’s first name (“Jessica”) centered, bold, color #333333.
+Right: “more_horiz” menu. Press opens bottom sheet:
+If viewing another user: Share Profile, Report, Block.
+If viewing own profile: Edit Profile, Settings, Share Profile.
+Slight blur/translucent background over content.
+Profile Hero Section
+
+Centered column:
+Avatar: 112–128px circle, white 4px ring, subtle shadow.
+If viewing own profile: floating edit chip (pencil) on bottom-right of avatar; opens image picker (camera/library). Show progress and error states.
+Full name: “Jessica Miller” large bold.
+Handle: “@jessicamiller” in textSecondary.
+Stats row (3 columns): Followers (1.2k), Following (450), Posts (23).
+Tappable: Followers/Following navigate to list screens.
+Primary action:
+Follow button: full-width, rounded-full, bg primary, white text “Follow”.
+Toggles to “Following” (outline or subtle surface style) with option menu (Unfollow).
+Haptics on toggle.
+About Me Card
+
+White rounded-xl card with soft shadow.
+Title: “About Me”.
+Body: multi-line paragraph textSecondary; if > 4 lines, truncate with “Read more” → expands inline.
+Tabs (Sticky under About)
+
+Two tabs: “Posts by Them” (active) and “Opinions About Them”.
+Active tab: primary color text and 2px primary bottom border; inactive: textSecondary.
+Tabs remain visible while scrolling (sticky).
+Tab: Posts by Them
+
+Masonry grid (2+ columns) of media cards.
+Card design:
+Rounded-xl image, full width, auto-height, shadow-sm.
+Bottom overlay: gradient black/60 → transparent.
+Tag chips inside overlay: small rounded pills, white/30 with backdrop blur, e.g. #friendly, #adventurous, #creative, #thoughtful.
+Interactions:
+Tap card → open Post Detail screen.
+Long-press (optional) → quick actions: Save, Share, Report.
+Performance:
+Infinite scroll (paginated), loading skeletons, pull-to-refresh.
+Image caching and resizeMode cover.
+Tab: Opinions About Them
+
+Vertical list of opinion cards:
+Each card: author avatar/handle (or “Anonymous”), timestamp, text body, optional tags/reactions.
+Like/Reply actions; tap to open thread.
+Empty state with friendly illustration/message.
+Bottom Navigation (Sticky)
+
+Tabs: Home, Post, Community, Profile.
+Material Symbols outlined; Profile is active (peach + bold label).
+Inactive tabs: textSecondary; hover/press → primary tint.
+Data & State
+
+Route param: userId.
+Fetch user profile, posts, opinions independently with caching and pagination.
+Follow/Unfollow mutation with optimistic update and rollback on error.
+Avatar update flow with permissions and upload status.
+Numbers formatted (e.g., 1.2k).
+Accessibility
+
+All touch targets ≥ 44x44.
+accessibilityLabel/hints:
+“Back”, “More options”, “Edit profile photo”, “Follow/Following”, “Open post”, “Open followers list”, etc.
+Announce follow state changes and upload success/fail to screen readers.
+Good color contrast and focus states.
+Clean Code & Reusability
+
+Components:
+AppHeader
+ProfileHero (AvatarEditable, NameHandle, StatsRow, FollowButton)
+AboutCard
+StickyTabs (PostsTab, OpinionsTab)
+MasonryGrid + MediaCard
+TagChip
+OpinionCard
+BottomTabNav
+MoreOptionsSheet
+Theme file (colors, spacing, typography).
+Types for User, Post, Opinion, Tag; API layer with typed responses.
+testIDs for E2E/UI tests.
+Interactions & Edge Cases
+
+Handle private profiles (lock icon + Request Follow).
+Error/retry states for data fetching and image upload.
+Skeletons/placeholders while loading.
+Support anonymous opinions (hide author identity).
+Web hover states for cards and tabs.
+Deliverables
+
+TypeScript RN code for ProfileDetailScreen and all reusable components.
+Navigation setup with Profile tab active.
+Masonry grid implementation with pagination and refreshing.
+Mock API and data schemas.
+Notes for dependencies to install (react-navigation, vector icons, rn-masonry-list/FlashList, react-query/SWR, image picker, safe-area, expo-google-fonts).
+Visual Notes to Match Screenshot/HTML
+
+Background #fcf9f8 across the screen.
+Primary peach #f5a48a for active elements; accent #f8c7b8; secondary surface #fceee9.
+Centered name in header; avatar with white ring and drop shadow; small peach edit chip.
+Big rounded “Follow” button.
+About card: white, rounded-xl, subtle shadow.
+Tab labels: “Posts by Them” active (peach + underline), “Opinions About Them” inactive.
+Masonry cards with soft rounded corners and gradient overlay; tag pills with white/30 blur.
+Output
+
+Provide complete, runnable code snippets for the screen, components, and minimal navigation wiring.
+Include a README-style comment on running, fonts loading, and any web-only behavior.
